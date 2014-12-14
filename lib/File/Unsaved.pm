@@ -1,7 +1,7 @@
 package File::Unsaved;
 
-our $DATE = '2014-10-09'; # DATE
-our $VERSION = '0.02'; # VERSION
+our $DATE = '2014-12-14'; # DATE
+our $VERSION = '0.03'; # VERSION
 
 use 5.010001;
 use strict;
@@ -27,14 +27,14 @@ contain these keys: `editor` (kind of editor).
 
 The heuristics are as folow:
 
-* Emacs and joe: check whether `.#<name>` (symlink) exists. Emacs targets the
+* Emacs and joe: check whether `.#<name>` symlink exists. Emacs targets the
   symlink to `<user>@<host>.<PID>:<timestamp>` while joe to
   `<user>@<host>.<PID>`. Caveat: Unix only.
 
-* vim: check whether `.<name>.swp` exists, newer than file, and its 0x03ef-th
-  byte has the value of `U` (which vim uses to mark the file as unsaved).
-  Caveat: vim can be instructed to put swap file somewhere else or not create
-  swap file at all, so in those cases unsaved data will not be detected.
+* vim: check whether `.<name>.swp` file exists, not older than file, and its
+  0x03ef-th byte has the value of `U` (which vim uses to mark the file as
+  unsaved). Caveat: vim can be instructed to put swap file somewhere else or not
+  create swap file at all, so in those cases unsaved data will not be detected.
 
 _
     args => {
@@ -98,13 +98,13 @@ File::Unsaved - Check whether file has unsaved modification in an editor
 
 =head1 VERSION
 
-This document describes version 0.02 of File::Unsaved (from Perl distribution File-Unsaved), released on 2014-10-09.
+This document describes version 0.03 of File::Unsaved (from Perl distribution File-Unsaved), released on 2014-12-14.
 
 =head1 SYNOPSIS
 
- use File::Unsaved qw(check_file_unsaved);
+ use File::Unsaved qw(check_unsaved_file);
  die "Can't modify foo.txt because it is being opened and modified in an editor"
-     if check_file_unsaved(path => "foo.txt");
+     if check_unsaved_file(path => "foo.txt");
 
 =head1 DESCRIPTION
 
@@ -126,14 +126,14 @@ The heuristics are as folow:
 
 =over
 
-=item * Emacs and joe: check whether C<< .#E<lt>nameE<gt> >> (symlink) exists. Emacs targets the
+=item * Emacs and joe: check whether C<< .#E<lt>nameE<gt> >> symlink exists. Emacs targets the
 symlink to C<< E<lt>userE<gt>@E<lt>hostE<gt>.E<lt>PIDE<gt>:E<lt>timestampE<gt> >> while joe to
 C<< E<lt>userE<gt>@E<lt>hostE<gt>.E<lt>PIDE<gt> >>. Caveat: Unix only.
 
-=item * vim: check whether C<< .E<lt>nameE<gt>.swp >> exists, newer than file, and its 0x03ef-th
-byte has the value of C<U> (which vim uses to mark the file as unsaved).
-Caveat: vim can be instructed to put swap file somewhere else or not create
-swap file at all, so in those cases unsaved data will not be detected.
+=item * vim: check whether C<< .E<lt>nameE<gt>.swp >> file exists, not older than file, and its
+0x03ef-th byte has the value of C<U> (which vim uses to mark the file as
+unsaved). Caveat: vim can be instructed to put swap file somewhere else or not
+create swap file at all, so in those cases unsaved data will not be detected.
 
 =back
 
